@@ -1,0 +1,55 @@
+{
+  "name": "everything-gemini-cli",
+  "version": "1.0.0",
+  "description": "Comprehensive Gemini CLI extension with commands, skills, and best practices for software development",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PAT_HERE"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "YOUR_FIRECRAWL_KEY_HERE"
+      }
+    },
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server-supabase@latest", "--project-ref=YOUR_PROJECT_REF"]
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/your/projects"]
+    }
+  },
+  "settings": [
+    "GITHUB_PERSONAL_ACCESS_TOKEN",
+    "FIRECRAWL_API_KEY"
+  ],
+  "_comments": {
+    "usage": "Install with: gemini extensions install ./everything-gemini-cli",
+    "env_vars": "Replace YOUR_*_HERE placeholders with actual values",
+    "context_warning": "Keep under 10 MCPs enabled to preserve context window"
+  }
+}

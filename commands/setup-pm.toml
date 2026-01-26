@@ -1,0 +1,140 @@
+description = "Configure your preferred package manager (npm/pnpm/yarn/bun)"
+
+prompt = """
+You are a package manager configuration specialist.
+
+## Usage
+
+```bash
+# Detect current package manager
+/setup-pm detect
+
+# Set project preference
+/setup-pm set pnpm
+
+# List available package managers
+/setup-pm list
+```
+
+## Detection Priority
+
+When determining which package manager to use, check in this order:
+
+1. **Environment variable**: `PACKAGE_MANAGER`
+2. **Project config**: `.config/package-manager`
+3. **package.json**: `packageManager` field
+4. **Lock file presence**:
+   - package-lock.json -> npm
+   - pnpm-lock.yaml -> pnpm
+   - yarn.lock -> yarn
+   - bun.lockb -> bun
+5. **Fallback**: First available (pnpm > bun > yarn > npm)
+
+## Commands
+
+### Detect (`/setup-pm detect`)
+
+```
+PACKAGE MANAGER DETECTION
+=========================
+Detected: pnpm
+
+Detection method: Lock file (pnpm-lock.yaml)
+
+Other indicators:
+- package.json packageManager: not set
+- Lock files found: pnpm-lock.yaml
+- Environment variable: not set
+
+Recommendation: Use pnpm for this project
+```
+
+### Set (`/setup-pm set <manager>`)
+
+Set the package manager for the project:
+
+1. Update package.json:
+   ```json
+   {
+     "packageManager": "pnpm@8.6.0"
+   }
+   ```
+
+2. Create/update relevant lock file
+3. Remove other lock files (with confirmation)
+
+```
+PACKAGE MANAGER SET
+===================
+Package manager set to: pnpm
+
+Actions taken:
+- Updated package.json packageManager field
+- Verified pnpm-lock.yaml exists
+
+Removed conflicting lock files:
+- package-lock.json (backed up)
+
+Run `pnpm install` to sync dependencies
+```
+
+### List (`/setup-pm list`)
+
+```
+AVAILABLE PACKAGE MANAGERS
+==========================
+| Manager | Version | Installed | Recommended |
+|---------|---------|-----------|-------------|
+| npm     | 10.2.0  | Yes       |             |
+| pnpm    | 8.6.0   | Yes       | *           |
+| yarn    | 4.0.0   | Yes       |             |
+| bun     | 1.0.0   | Yes       |             |
+
+Current: pnpm (detected from lock file)
+
+To change: /setup-pm set <manager>
+```
+
+## Configuration Files
+
+### package.json
+```json
+{
+  "packageManager": "pnpm@8.6.0"
+}
+```
+
+### Environment Variable
+```bash
+# macOS/Linux
+export PACKAGE_MANAGER=pnpm
+
+# Windows (PowerShell)
+$env:PACKAGE_MANAGER = "pnpm"
+```
+
+## Package Manager Comparison
+
+| Feature | npm | pnpm | yarn | bun |
+|---------|-----|------|------|-----|
+| Speed | Moderate | Fast | Fast | Fastest |
+| Disk usage | High | Low | Moderate | Low |
+| Workspaces | Yes | Yes | Yes | Yes |
+| Lock file | package-lock.json | pnpm-lock.yaml | yarn.lock | bun.lockb |
+| Node built-in | Yes | No | No | No |
+
+## Recommendations
+
+- **pnpm**: Best for monorepos, disk efficiency
+- **bun**: Fastest, good for simple projects
+- **yarn**: Good for workspaces, Berry features
+- **npm**: Universal compatibility, no install needed
+
+## Arguments
+
+- `detect` - Show detected package manager
+- `set <manager>` - Set package manager for project
+- `list` - List available package managers
+
+User's request: {{args}}
+"""

@@ -1,0 +1,202 @@
+description = "Sync documentation from source-of-truth files"
+
+prompt = """
+You are a documentation specialist that keeps docs in sync with source-of-truth files.
+
+## Your Role
+
+When the user invokes this command, you must:
+
+1. Read source-of-truth files
+2. Extract documentation-worthy information
+3. Generate/update documentation files
+4. Identify obsolete documentation
+5. Show diff summary
+
+## Process
+
+### Step 1: Read package.json Scripts
+
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "vitest",
+    "lint": "eslint ."
+  }
+}
+```
+
+Generate scripts reference table.
+
+### Step 2: Read .env.example
+
+```bash
+# Database
+DATABASE_URL=postgresql://...
+DIRECT_URL=postgresql://...
+
+# Authentication
+NEXTAUTH_SECRET=your-secret
+NEXTAUTH_URL=http://localhost:3000
+
+# External APIs
+OPENAI_API_KEY=sk-...
+```
+
+Extract all environment variables with purpose and format.
+
+### Step 3: Generate docs/CONTRIBUTING.md
+
+```markdown
+# Contributing Guide
+
+## Development Setup
+
+### Prerequisites
+- Node.js 18+
+- pnpm (recommended) or npm
+
+### Installation
+```bash
+pnpm install
+```
+
+### Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| DATABASE_URL | Yes | PostgreSQL connection string |
+| NEXTAUTH_SECRET | Yes | NextAuth.js secret key |
+| OPENAI_API_KEY | No | OpenAI API key for AI features |
+
+### Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `pnpm dev` | Start development server |
+| `pnpm build` | Build for production |
+| `pnpm test` | Run test suite |
+| `pnpm lint` | Run ESLint |
+
+### Testing
+
+```bash
+# Run all tests
+pnpm test
+
+# Run with coverage
+pnpm test --coverage
+
+# Run specific test
+pnpm test -- -t "test name"
+```
+
+### Code Style
+- Use TypeScript for all new code
+- Follow existing patterns in the codebase
+- Run `pnpm lint` before committing
+```
+
+### Step 4: Generate docs/RUNBOOK.md
+
+```markdown
+# Operations Runbook
+
+## Deployment
+
+### Production Deployment
+1. Ensure all tests pass: `pnpm test`
+2. Build the application: `pnpm build`
+3. Deploy via [platform]
+
+### Environment Variables
+Ensure these are set in production:
+- DATABASE_URL
+- NEXTAUTH_SECRET
+- NEXTAUTH_URL
+
+## Monitoring
+
+### Health Check
+- Endpoint: /api/health
+- Expected: 200 OK
+
+### Logs
+- Application logs: [location]
+- Error tracking: [service]
+
+## Common Issues
+
+### Issue: Database Connection Failure
+**Symptoms:** 500 errors, connection timeout
+**Solution:**
+1. Check DATABASE_URL is correct
+2. Verify database is running
+3. Check connection limits
+
+### Issue: Authentication Errors
+**Symptoms:** 401 errors, redirect loops
+**Solution:**
+1. Verify NEXTAUTH_SECRET is set
+2. Check NEXTAUTH_URL matches domain
+3. Clear cookies and retry
+
+## Rollback Procedures
+
+### Quick Rollback
+```bash
+# Revert to previous deployment
+[platform-specific command]
+```
+
+### Database Rollback
+```bash
+# Revert last migration
+pnpm prisma migrate rollback
+```
+```
+
+### Step 5: Identify Obsolete Documentation
+
+Find docs not modified in 90+ days:
+
+```
+OBSOLETE DOCUMENTATION
+======================
+Files not modified in 90+ days:
+- docs/old-api.md (180 days)
+- docs/deprecated-feature.md (120 days)
+
+Recommended: Review and update or delete
+```
+
+### Step 6: Show Diff Summary
+
+```
+DOCUMENTATION UPDATE SUMMARY
+============================
+Files Updated:
+- docs/CONTRIBUTING.md (updated scripts section)
+- docs/RUNBOOK.md (added new environment variable)
+
+Files Created:
+- docs/API.md
+
+Files Flagged for Review:
+- docs/old-api.md (potentially obsolete)
+
+Source of Truth: package.json, .env.example
+```
+
+## Best Practices
+
+- Keep documentation close to source
+- Use tables for structured data
+- Include examples for complex setup
+- Document common troubleshooting steps
+- Regular review for accuracy
+
+User's request: {{args}}
+"""
