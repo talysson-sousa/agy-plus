@@ -21,15 +21,35 @@ Thank you to Affaan for the incredible work and for open-sourcing it under the M
 
 ## Installation
 
+### One-Line Install (Recommended)
+
 ```bash
-# Clone or download the extension
-git clone https://github.com/your-username/everything-gemini-cli.git
+gemini extensions install pm-bhatt/everything-gemini-cli
+```
 
-# Install the extension
+That's it! No cloning required.
+
+### Alternative Methods
+
+```bash
+# Install from full GitHub URL
+gemini extensions install https://github.com/pm-bhatt/everything-gemini-cli
+
+# Or clone and install locally
+git clone https://github.com/pm-bhatt/everything-gemini-cli.git
 gemini extensions install ./everything-gemini-cli
+```
 
-# Verify installation
+### Verify Installation
+
+```bash
 gemini extensions list
+```
+
+### Update Extension
+
+```bash
+gemini extensions update everything-gemini-cli
 ```
 
 ## Quick Start
