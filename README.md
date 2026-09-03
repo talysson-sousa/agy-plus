@@ -1,220 +1,160 @@
-# Everything Gemini CLI
+# agy-plus
 
-A comprehensive Gemini CLI extension with commands, skills, and best practices for software development.
+A comprehensive plugin for **Google Antigravity CLI (`agy`)** and **Antigravity 2.0 / IDE** with slash command workflows, progressive-disclosure skills, lifecycle hooks, rules, and Model Context Protocol (MCP) integrations for high-performance software development.
 
 ## Credits & Attribution
 
-This project is based on **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** by **[Affaan Mustafa](https://x.com/affaanmustafa)** - an Anthropic hackathon winner who created the complete collection of Claude Code configs evolved over 10+ months of intensive daily use.
+This project is adapted from **[everything-gemini-cli](https://github.com/pm-bhatt/everything-gemini-cli)** and the original **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** by **[Affaan Mustafa](https://x.com/affaanmustafa)** (Anthropic hackathon winner).
 
-Thank you to Affaan for the incredible work and for open-sourcing it under the MIT license, making this Gemini CLI adaptation possible.
-
-**Original Guides by Affaan:**
-- [The Shorthand Guide](https://x.com/affaanmustafa/status/2012378465664745795) - Setup, foundations, philosophy
-- [The Longform Guide](https://x.com/affaanmustafa/status/2014040193557471352) - Token optimization, memory persistence, evals
+---
 
 ## Features
 
-- **15 Commands**: Pre-configured workflows for planning, TDD, code review, testing, and more
-- **14 Skills**: Context-aware best practices that activate automatically
-- **Combined Guidelines**: Security, coding style, testing, and git workflow rules
-- **MCP Integration**: Ready-to-use Model Context Protocol server configurations
+- **29 Skills & Slash Commands**:
+  - **15 Workflow Skills**: Directly invocable as slash commands (`/plan`, `/tdd`, `/code-review`, `/build-fix`, `/verify`, `/e2e`, `/refactor-clean`, `/checkpoint`, `/learn`, `/eval`, `/orchestrate`, `/test-coverage`, `/update-docs`, `/update-codemaps`, `/setup-pm`).
+  - **14 Domain & Engineering Skills**: Context-aware, progressive disclosure guides (`backend-patterns`, `frontend-patterns`, `postgres-patterns`, `clickhouse-io`, `security-review`, `coding-standards`, `continuous-learning`, `continuous-learning-v2`, `eval-harness`, `iterative-retrieval`, `strategic-compact`, `tdd-workflow`, `verification-loop`, `project-guidelines-example`).
+- **Antigravity Lifecycle Hooks (`hooks.json`)**:
+  - `PreToolUse`: Automated safety gate on `run_command` (prevents destructive commands like `rm -rf /`, force push to main, raw disk writes) via `scripts/safety-check.sh`.
+  - `PreInvocation`: Optional guideline reminders for TDD, security, and immutability standards via `scripts/reminder.sh`.
+- **Global & Workspace Rules (`rules/AGENTS.md`)**:
+  - Security First, Immutability by default, Many Small Files principle, 80%+ test coverage, Git workflows.
+- **MCP Server Configurations (`mcp_config.json`)**:
+  - Preconfigured definitions for GitHub, Memory, Sequential Thinking, Firecrawl, Supabase, Vercel, Context7, and Filesystem servers.
 
-## Installation
+---
 
-### One-Line Install (Recommended)
+## Quick Installation (Global in `~/.gemini`)
 
-```bash
-gemini extensions install pm-bhatt/everything-gemini-cli
-```
+### Method 1: Antigravity CLI Command (Recommended)
 
-That's it! No cloning required.
-
-### Alternative Methods
-
-```bash
-# Install from full GitHub URL
-gemini extensions install https://github.com/pm-bhatt/everything-gemini-cli
-
-# Or clone and install locally
-git clone https://github.com/pm-bhatt/everything-gemini-cli.git
-gemini extensions install ./everything-gemini-cli
-```
-
-### Verify Installation
+From the root of this repository:
 
 ```bash
-gemini extensions list
+agy plugin install .
 ```
 
-### Update Extension
+To verify:
+```bash
+agy plugin list
+```
+
+### Method 2: Helper Script
 
 ```bash
-gemini extensions update everything-gemini-cli
+./install.sh
 ```
 
-## Quick Start
+### Uninstallation
 
-After installation, the extension provides:
-
-### Commands (invoke with /command-name)
-
-| Command | Description |
-|---------|-------------|
-| `/plan` | Create implementation plan before coding |
-| `/tdd` | Enforce test-driven development workflow |
-| `/code-review` | Comprehensive code review |
-| `/build-fix` | Fix TypeScript and build errors |
-| `/e2e` | Generate and run E2E tests |
-| `/refactor-clean` | Safely remove dead code |
-| `/checkpoint` | Create/verify workflow checkpoints |
-| `/verify` | Run comprehensive verification |
-| `/learn` | Extract reusable patterns |
-| `/eval` | Manage eval-driven development |
-| `/orchestrate` | Sequential multi-step workflows |
-| `/test-coverage` | Analyze and improve test coverage |
-| `/update-docs` | Sync documentation from source |
-| `/update-codemaps` | Update architecture documentation |
-| `/setup-pm` | Configure package manager |
-
-### Skills (activate with /skills skill-name)
-
-Skills provide domain-specific best practices:
-
-| Skill | When to Use |
-|-------|-------------|
-| `tdd-workflow` | Writing new features, fixing bugs |
-| `coding-standards` | All development work |
-| `backend-patterns` | API and server-side development |
-| `frontend-patterns` | React/Next.js development |
-| `postgres-patterns` | Database queries and schemas |
-| `clickhouse-io` | Analytics and data engineering |
-| `security-review` | Auth, user input, sensitive data |
-| `iterative-retrieval` | Complex context retrieval |
-| `eval-harness` | Evaluation-driven development |
-| `verification-loop` | Quality gate verification |
-| `continuous-learning` | Extract patterns from sessions |
-| `continuous-learning-v2` | Advanced instinct-based learning |
-| `strategic-compact` | Context management |
-| `project-guidelines-example` | Project-specific template |
-
-## Configuration
-
-### MCP Servers
-
-Edit `gemini-extension.json` to configure MCP servers:
-
-```json
-{
-  "mcpServers": {
-    "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "your-token-here"
-      }
-    }
-  }
-}
+```bash
+agy plugin uninstall agy-plus
+# or:
+./uninstall.sh
 ```
 
-### Environment Variables
+---
 
-Set these in your environment or the extension config:
-
-- `GITHUB_PERSONAL_ACCESS_TOKEN` - For GitHub MCP server
-- `FIRECRAWL_API_KEY` - For web scraping capabilities
-- `SUPABASE_PROJECT_REF` - For Supabase MCP server
-
-## Project Structure
+## Plugin Directory Structure
 
 ```
-everything-gemini-cli/
-├── gemini-extension.json     # Extension manifest
-├── GEMINI.md                 # Combined context (rules + guidelines)
-├── README.md                 # This file
-├── LICENSE                   # MIT license
-├── commands/                 # TOML command files (15 files)
-│   ├── plan.toml
-│   ├── tdd.toml
-│   └── ...
-├── skills/                   # SKILL.md files (14 skills)
-│   ├── tdd-workflow/SKILL.md
+agy-plus/
+├── plugin.json               # Plugin manifest
+├── mcp_config.json           # Antigravity MCP servers
+├── hooks.json                # Lifecycle hooks (PreToolUse safety checks, etc.)
+├── install.sh                # Global installer script (~/.gemini/config/plugins)
+├── uninstall.sh              # Global uninstaller script
+├── rules/                    # Rules applied when plugin is active
+│   ├── AGENTS.md             # Core rules & coding standards
+│   ├── dev.md                # Development mode guidelines
+│   ├── review.md             # Code review guidelines
+│   └── research.md           # Research & exploration guidelines
+├── scripts/                  # Executable hook scripts
+│   ├── safety-check.sh       # PreToolUse command interceptor
+│   └── reminder.sh           # PreInvocation reminder generator
+├── skills/                   # 29 Antigravity Skills (with SKILL.md frontmatter)
+│   ├── plan/SKILL.md         # /plan
+│   ├── tdd/SKILL.md          # /tdd
+│   ├── code-review/SKILL.md  # /code-review
+│   ├── build-fix/SKILL.md    # /build-fix
+│   ├── verify/SKILL.md       # /verify
+│   ├── e2e/SKILL.md          # /e2e
+│   ├── refactor-clean/SKILL.md
+│   ├── checkpoint/SKILL.md
+│   ├── learn/SKILL.md
+│   ├── eval/SKILL.md
+│   ├── orchestrate/SKILL.md
+│   ├── test-coverage/SKILL.md
+│   ├── update-docs/SKILL.md
+│   ├── update-codemaps/SKILL.md
+│   ├── setup-pm/SKILL.md
+│   ├── backend-patterns/SKILL.md
+│   ├── frontend-patterns/SKILL.md
+│   ├── postgres-patterns/SKILL.md
+│   ├── clickhouse-io/SKILL.md
+│   ├── security-review/SKILL.md
 │   ├── coding-standards/SKILL.md
 │   └── ...
-├── contexts/                 # Additional context files
-│   ├── dev.md
-│   ├── review.md
-│   └── research.md
-├── docs/                     # Documentation
-│   ├── migration-from-claude.md
-│   └── feature-parity.md
-└── examples/
-    └── GEMINI.md
+└── docs/                     # Documentation and parity references
 ```
 
-## Usage Examples
+---
 
-### Planning a New Feature
+## Usage Guide
 
-```
-/plan Add user authentication with OAuth
-```
+### 1. Workflow Slash Commands
 
-### Test-Driven Development
+Type any of the following commands in the Antigravity CLI prompt:
 
-```
-/tdd Implement password reset functionality
-```
+| Command | Description |
+|---|---|
+| `/plan` | Restate requirements, assess risks, and draft an implementation plan before writing code |
+| `/tdd` | Scaffold types, write failing tests (RED), implement minimal code (GREEN), refactor |
+| `/code-review` | Comprehensive security, quality, performance, and best practice review of changes |
+| `/build-fix` | Incrementally analyze and resolve TypeScript and build compilation errors safely |
+| `/verify` | Run complete verification suite (build, types, linter, tests, console.logs, git status) |
+| `/e2e` | Generate and execute Playwright end-to-end tests with Page Object Model and artifact capture |
+| `/refactor-clean` | Safely detect and eliminate dead code and unused dependencies with test gates |
+| `/checkpoint` | Create, verify, list, or clear workflow checkpoints and compare diffs |
+| `/learn` | Extract reusable patterns and debugging solutions from current session as new skills |
+| `/eval` | Manage eval-driven development with capability and regression test criteria |
+| `/orchestrate` | Coordinate multi-step workflows (feature, bugfix, refactor, security, or custom chains) |
+| `/test-coverage` | Analyze coverage gaps and generate tests to meet the 80%+ threshold |
+| `/update-docs` | Sync `CONTRIBUTING.md`, `RUNBOOK.md`, and API docs from source-of-truth files |
+| `/update-codemaps` | Generate and update token-lean architecture codemaps |
+| `/setup-pm` | Detect, configure, or switch the project's package manager (npm, pnpm, yarn, bun) |
 
-### Code Review
+### 2. Domain & Engineering Skills
 
-```
-/code-review
-```
+Antigravity automatically discovers and activates these skills via semantic matching, or you can invoke them directly:
 
-### Running Verification
+| Skill | Activation Trigger / Purpose |
+|---|---|
+| `backend-patterns` | API design, repository pattern, database query optimization, error handling |
+| `frontend-patterns` | React/Next.js components, custom hooks, state management, UI patterns |
+| `postgres-patterns` | PostgreSQL query optimization, indexes, migrations, RLS policies |
+| `clickhouse-io` | High-throughput analytics, ClickHouse schema design and aggregations |
+| `security-review` | Authentication, authorization, input validation, SQL injection, XSS, secrets |
+| `coding-standards` | Immutability, small functions, error handling, TypeScript best practices |
+| `tdd-workflow` | Comprehensive test-driven development methodologies |
+| `iterative-retrieval` | Efficient context searching and code exploration strategies |
+| `eval-harness` | Systematic evaluation setups and test harness creation |
+| `verification-loop` | Quality gate enforcement and validation loops |
+| `continuous-learning` / `continuous-learning-v2` | Instinct-based pattern capture and session learning |
+| `strategic-compact` | Managing context window limits and optimizing token usage |
+| `project-guidelines-example` | Template for project-specific customization guidelines |
 
-```
-/verify full
-```
+---
 
-## Migration from Claude Code
+## MCP Server Configuration
 
-If you're coming from everything-claude-code, see [migration-from-claude.md](docs/migration-from-claude.md) for details on:
-- Command format differences (Markdown -> TOML)
-- Agent handling (merged into command prompts)
-- Hook limitations (BeforeAgent only in Gemini CLI)
-- Feature parity notes
+The plugin provides ready-to-use MCP configurations in `mcp_config.json`. Configure your environment variables as needed:
 
-## Feature Parity
+- `GITHUB_PERSONAL_ACCESS_TOKEN`: For GitHub operations and PR management.
+- `FIRECRAWL_API_KEY`: For web scraping and search integrations.
+- `SUPABASE_PROJECT_REF`: For Supabase database operations.
 
-Some Claude Code features are not available in Gemini CLI:
-
-| Feature | Claude Code | Gemini CLI | Workaround |
-|---------|-------------|------------|------------|
-| Agents with tool restrictions | Yes | No | Inline in prompts |
-| Model selection per command | Yes | No | N/A |
-| PreToolUse hooks | Yes | No | Manual checklist |
-| PostToolUse hooks | Yes | No | Manual checklist |
-| Auto-formatting on edit | Yes | No | Manual or shell alias |
-
-See [feature-parity.md](docs/feature-parity.md) for full details.
-
-## Contributing
-
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+---
 
 ## License
 
 MIT License - see [LICENSE](LICENSE) file.
-
-## Credits
-
-- **Original Author**: [Affaan Mustafa](https://github.com/affaan-m) ([@affaanmustafa](https://x.com/affaanmustafa))
-- **Original Project**: [everything-claude-code](https://github.com/affaan-m/everything-claude-code)
-- **Gemini CLI Adaptation**: Community contribution

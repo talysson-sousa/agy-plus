@@ -1,0 +1,27 @@
+{
+  "safety-gate": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "run_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./scripts/safety-check.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  },
+  "guidelines-reminder": {
+    "enabled": false,
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "./scripts/reminder.sh",
+        "timeout": 10
+      }
+    ]
+  }
+}
