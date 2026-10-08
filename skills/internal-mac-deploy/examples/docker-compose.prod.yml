@@ -1,0 +1,85 @@
+# ==============================================================================
+# docker-compose.prod.yml Padrão Mac-811
+# ==============================================================================
+name: <app-name>-prod
+
+networks:
+  811-internal:
+    name: 811-internal
+    external: true
+
+services:
+  # 1. Serviço de Migração de Banco (executa e finaliza antes do app subir)
+  migrate:
+    build:
+      context: .
+      target: migration
+    container_name: <app-name>-migrate
+    env_file:
+      - .env
+    environment:
+      # Conecta obrigatoriamente ao container central postgres-database
+      DATABASE_URL: ${DATABASE_URL:-postgresql://sistemas:sistemas@postgres-database:5432/<database_name>}
+    command: ["npx", "prisma", "db", "push"]
+    networks:
+      - 811-internal
+    restart: "no"
+
+  # 2. Serviço CLI / Ferramentas Administrativas (Opcional, ativado via --profile tools)
+  cli:
+    build:
+      context: .
+      target: cli
+    container_name: <app-name>-cli
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://sistemas:sistemas@postgres-database:5432/<database_name>}
+    networks:
+      - 811-internal
+    restart: "no"
+    profiles: ["tools"]
+
+  # 3. Aplicação Principal em Produção
+  app:
+    build:
+      context: .
+      target: runner
+      # Passe args de build se a aplicação precisar de variáveis estáticas públicas no build
+      args:
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+    container_name: <app-name>-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://sistemas:sistemas@postgres-database:5432/<database_name>}
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+    volumes:
+      - <app-name>_prod_public_uploads:/app/public/uploads
+      - <app-name>_prod_private_uploads:/app/.data/private-uploads
+    networks:
+      - 811-internal
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  # 4. Túnel Cloudflare (Opcional - caso a aplicação precise de acesso externo público)
+  # cloudflared:
+  #   image: cloudflare/cloudflared:latest
+  #   container_name: <app-name>-cloudflared
+  #   restart: unless-stopped
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+  #   command: tunnel --no-autoupdate run
+  #   networks:
+  #     - 811-internal
+  #   depends_on:
+  #     - app
+
+volumes:
+  <app-name>_prod_public_uploads:
+  <app-name>_prod_private_uploads:

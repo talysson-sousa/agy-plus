@@ -123,6 +123,11 @@ MANDATORY workflow:
 
 ### 4. Git Workflow
 
+> [!CRITICAL]
+> **APROVAÇÃO OBRIGATÓRIA PARA COMMIT & PUSH:**
+> NUNCA execute `git commit` ou `git push` automaticamente sem a solicitação ou aprovação direta e explícita do usuário.
+> Mesmo após concluir implementações, revisões de código ou testes com sucesso, apresente os resultados, testes e arquivos modificados e aguarde a autorização expressa do usuário antes de criar commits ou enviar alterações para o repositório remoto.
+
 **Commit Message Format:**
 ```
 <type>: <description>
@@ -136,7 +141,9 @@ Types: feat, fix, refactor, docs, test, chore, perf, ci
 1. **Plan First** - Use `/plan` skill/command to create implementation plan
 2. **TDD Approach** - Use `/tdd` skill/command
 3. **Code Review** - Use `/code-review` skill/command immediately after writing code
-4. **Commit & Push** - Detailed commit messages
+4. **Security Review** - Review security checklist
+5. **Report & Request Approval** - Present status, diff summary, test results, and wait for user's explicit approval
+6. **Commit & Push (ONLY with Direct Approval)** - Execute commit and push only after direct user confirmation
 
 ### 5. Performance Optimization
 

@@ -10,16 +10,18 @@ This project is adapted from **[everything-gemini-cli](https://github.com/pm-bha
 
 ## Features
 
-- **29 Skills & Slash Commands**:
+- **32 Skills & Slash Commands**:
   - **15 Workflow Skills**: Directly invocable as slash commands (`/plan`, `/tdd`, `/code-review`, `/build-fix`, `/verify`, `/e2e`, `/refactor-clean`, `/checkpoint`, `/learn`, `/eval`, `/orchestrate`, `/test-coverage`, `/update-docs`, `/update-codemaps`, `/setup-pm`).
-  - **14 Domain & Engineering Skills**: Context-aware, progressive disclosure guides (`backend-patterns`, `frontend-patterns`, `postgres-patterns`, `clickhouse-io`, `security-review`, `coding-standards`, `continuous-learning`, `continuous-learning-v2`, `eval-harness`, `iterative-retrieval`, `strategic-compact`, `tdd-workflow`, `verification-loop`, `project-guidelines-example`).
+  - **17 Domain & Engineering Skills**: Context-aware, progressive disclosure guides (`backend-patterns`, `frontend-patterns`, `postgres-patterns`, `clickhouse-io`, `security-review`, `coding-standards`, `continuous-learning`, `continuous-learning-v2`, `eval-harness`, `iterative-retrieval`, `strategic-compact`, `tdd-workflow`, `verification-loop`, `project-guidelines-example`, `git-ssh-hosts`, `internal-mac-deploy`, `native-mcp-http-server`).
+- **7 Subagents (`agents/*.md`)**:
+  - `adk-agent-builder`, `dotfiles-admin`, `fullstack-architect`, `google-chat-architect`, `mac-devops`, `qa-eval-specialist`, `security-auditor`.
 - **Antigravity Lifecycle Hooks (`hooks.json`)**:
   - `PreToolUse`: Automated safety gate on `run_command` (prevents destructive commands like `rm -rf /`, force push to main, raw disk writes) via `scripts/safety-check.sh`.
   - `PreInvocation`: Optional guideline reminders for TDD, security, and immutability standards via `scripts/reminder.sh`.
 - **Global & Workspace Rules (`rules/AGENTS.md`)**:
   - Security First, Immutability by default, Many Small Files principle, 80%+ test coverage, Git workflows.
 - **MCP Server Configurations (`mcp_config.json`)**:
-  - Preconfigured definitions for GitHub, Memory, Sequential Thinking, Firecrawl, Supabase, Vercel, Context7, and Filesystem servers.
+  - Preconfigured definitions for GitHub, Memory, Sequential Thinking, and Filesystem servers.
 
 ---
 
@@ -142,6 +144,21 @@ Antigravity automatically discovers and activates these skills via semantic matc
 | `continuous-learning` / `continuous-learning-v2` | Instinct-based pattern capture and session learning |
 | `strategic-compact` | Managing context window limits and optimizing token usage |
 | `project-guidelines-example` | Template for project-specific customization guidelines |
+| `git-ssh-hosts` | Guidance and rules for working with multiple GitHub SSH identities and host aliases |
+| `internal-mac-deploy` | Docker multi-stage build and deployment orchestration for internal macOS server (Mac-811) |
+| `native-mcp-http-server` | Architectural patterns for native HTTP/JSON-RPC 2.0 MCP servers |
+
+### 3. Subagents (`agents/`)
+
+| Subagent | Role & Specialty | Model |
+|---|---|---|
+| `adk-agent-builder` | Especialista no ciclo de vida de agentes Google ADK e agents-cli | pro |
+| `dotfiles-admin` | Administrador de ambiente Linux, Workstation e Dotfiles (Sway, i3, Neovim, Tmux, Zsh) | inherit |
+| `fullstack-architect` | Arquiteto fullstack especialista em Node.js, Next.js, PostgreSQL, ClickHouse e imutabilidade | pro |
+| `google-chat-architect` | Especialista em Cards V2, modais (Dialogs) e webhooks para Google Chat e Workspace Add-ons | inherit |
+| `mac-devops` | Especialista em Docker multi-stage e deploy de produção no servidor corporativo Mac-811 | inherit |
+| `qa-eval-specialist` | Especialista em TDD, testes automatizados (unitários, integração, E2E) e cobertura mínima de 80% | inherit |
+| `security-auditor` | Auditor de segurança de código, prevenção contra vulnerabilidades (OWASP) e validação de esquemas | pro |
 
 ---
 
